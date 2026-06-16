@@ -1,0 +1,41 @@
+base_dir: "."
+
+data:
+  years: [2024]
+  months: [1]
+  target_zones: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  weather_path: null
+
+models:
+  active: ["lr", "rf", "xgb", "lstm", "tcn"]
+  seq_length: 24
+  hyperparameters:
+    rf:
+      n_estimators: 50
+      max_depth: 10
+      min_samples_leaf: 5
+    xgb:
+      n_estimators: 50
+      max_depth: 6
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+    lstm:
+      hidden_size: 64
+      num_layers: 2
+      dropout: 0.2
+      epochs: 3
+      batch_size: 256
+      lr: 0.001
+    tcn:
+      num_channels: [32, 64, 128]
+      kernel_size: 3
+      dropout: 0.2
+      epochs: 3
+      batch_size: 256
+      lr: 0.001
+
+output:
+  figures_dir: "outputs/figures"
+  models_dir: "outputs/models"
+  results_dir: "outputs/results"
