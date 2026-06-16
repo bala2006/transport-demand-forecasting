@@ -73,7 +73,7 @@ def run_preprocessing(
     df = aggregate_hourly_demand(df)
 
     with open(zone_lookup_path) as _f:
-        _csv_text = "".join(l for l in _f if l.strip())
+        _csv_text = "".join(line for line in _f if line.strip())
     zones = pl.read_csv(_csv_text.encode(), has_header=True, infer_schema_length=10000)
     zone_map = zones.select([
         pl.col("LocationID").alias("PULocationID"),
@@ -92,10 +92,13 @@ def generate_synthetic_data(
     n_zones: int = 10,
     n_hours: int = 3000,
 ) -> pl.DataFrame:
+    import datetime
+
     import numpy as np
+
     rng = np.random.default_rng(42)
-    base_dt = pl.datetime(2024, 1, 1, 0, 0, 0)
-    hours = [base_dt + pl.duration(hours=i) for i in range(n_hours)]
+    base_dt = datetime.datetime(2024, 1, 1, 0, 0, 0)
+    hours = [base_dt + datetime.timedelta(hours=i) for i in range(n_hours)]
     rows = []
     for h in hours:
         for zone_id in range(1, n_zones + 1):

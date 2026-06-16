@@ -2,8 +2,6 @@ import argparse
 import json
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
 import polars as pl
 import yaml
 import torch
@@ -16,11 +14,7 @@ from src.models.lstm_model import LSTMRegressor, prepare_sequences
 from src.models.tcn_model import TCNRegressor
 from src.models.train import train_sklearn_model, train_torch_model, evaluate_model
 from src.evaluation.metrics import comparison_table
-from src.evaluation.plots import (
-    plot_actual_vs_predicted,
-    plot_residuals,
-    plot_time_series_comparison,
-)
+from src.evaluation.plots import plot_actual_vs_predicted
 from src.explain.shap_analysis import explain_with_shap
 
 

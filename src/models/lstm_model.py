@@ -34,6 +34,6 @@ def prepare_sequences(
 ) -> tuple[torch.Tensor, torch.Tensor]:
     X_seq, y_seq = [], []
     for i in range(len(X) - seq_length):
-        X_seq.append(X[i : i + seq_length])
+        X_seq.append(X[i: i + seq_length])
         y_seq.append(y[i + seq_length])
     return torch.stack(X_seq), torch.tensor(y_seq)

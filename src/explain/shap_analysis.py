@@ -1,11 +1,13 @@
+from pathlib import Path
+
 import numpy as np
 import shap
 import torch
 import torch.nn as nn
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from pathlib import Path
+import matplotlib.pyplot as plt  # noqa: E402
 
 
 def explain_with_shap(
@@ -34,7 +36,10 @@ def explain_with_shap(
         explainer = shap.KernelExplainer(model_fn, X_bg_t.cpu().numpy()[:50])
         shap_values = explainer.shap_values(X_ex_t.cpu().numpy()[:50])
     else:
-        explainer = shap.TreeExplainer(model) if hasattr(model, "feature_importances_") else shap.KernelExplainer(model.predict, X_background[:50])
+        if hasattr(model, "feature_importances_"):
+            explainer = shap.TreeExplainer(model)
+        else:
+            explainer = shap.KernelExplainer(model.predict, X_background[:50])
         shap_values = explainer.shap_values(X_explain[:n_samples])
 
     fig = plt.figure(figsize=(12, 6))

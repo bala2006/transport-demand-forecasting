@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import torch
@@ -81,8 +80,14 @@ def evaluate_model(
         model.eval()
         device = torch.device(device)
         with torch.no_grad():
-            X_t = X_test.to(device) if isinstance(X_test, torch.Tensor) else torch.tensor(X_test, dtype=torch.float32).to(device)
-            y_t = y_test.to(device) if isinstance(y_test, torch.Tensor) else torch.tensor(y_test, dtype=torch.float32).to(device)
+            if isinstance(X_test, torch.Tensor):
+                X_t = X_test.to(device)
+            else:
+                X_t = torch.tensor(X_test, dtype=torch.float32).to(device)
+            if isinstance(y_test, torch.Tensor):
+                y_t = y_test.to(device)
+            else:
+                y_t = torch.tensor(y_test, dtype=torch.float32).to(device)
             preds = model(X_t).cpu().numpy()
             y_true = y_t.cpu().numpy()
     else:
